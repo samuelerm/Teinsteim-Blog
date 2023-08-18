@@ -260,9 +260,7 @@ MAIL_APP_PW = os.environ.get("PASSWORD_KEY")
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     if request.method == "POST":
-        data = request.form
-        send_email(data["name"], data["email"], data["phone"], data["message"])
-        return render_template("contact.html", msg_sent=True)
+        send_email(request.form.get("name"), request.form.get("email"), request.form.get("phone"), request.form.get("message"))
     return render_template("contact.html", msg_sent=False,  current_user=current_user)
 
 
@@ -270,9 +268,11 @@ def send_email(name, email, phone, message):
     email_message = f"Subject:New Message\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nMessage:{message}"
     with smtplib.SMTP("smtp.gmail.com") as connection:
         connection.starttls()
-        connection.login(MAIL_ADDRESS, MAIL_APP_PW)
-        connection.sendmail(MAIL_ADDRESS, MAIL_APP_PW, email_message)
-
+        connection.login(user=MAIL_ADDRESS, password=MAIL_APP_PW)
+        connection.sendmail(from_addr=MAIL_ADDRESS,
+                            to_addrs=email,
+                            msg=email_message)
+    return render_template("contact.html", msg_sent=True, current_user=current_user)
 
 if __name__ == "__main__":
     app.run(debug=False)
