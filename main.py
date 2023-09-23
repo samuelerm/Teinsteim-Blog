@@ -174,7 +174,6 @@ def get_all_posts():
     return render_template("index.html", all_posts=posts, current_user=current_user)
 
 
-# Add a POST method to be able to post comments
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
     requested_post = db.get_or_404(BlogPost, post_id)
@@ -196,7 +195,6 @@ def show_post(post_id):
     return render_template("post.html", post=requested_post, current_user=current_user, form=comment_form)
 
 
-# Use a decorator so only an admin user can create new posts
 @app.route("/new-post", methods=["GET", "POST"])
 @admin_only
 def add_new_post():
@@ -216,7 +214,7 @@ def add_new_post():
     return render_template("make-post.html", form=form, current_user=current_user)
 
 
-# Use a decorator so only an admin user can edit a post
+
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
 def edit_post(post_id):
     post = db.get_or_404(BlogPost, post_id)
@@ -273,6 +271,7 @@ def send_email(name, email, phone, message):
                             to_addrs=email,
                             msg=email_message)
     return render_template("contact.html", msg_sent=True, current_user=current_user)
+
 
 if __name__ == "__main__":
     app.run(debug=False)

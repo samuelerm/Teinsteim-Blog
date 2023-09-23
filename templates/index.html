@@ -29,10 +29,8 @@
         </a>
         <p class="post-meta">
           Posted by
-          <!-- post.author.name is now a User object -->
           <a href="#">{{post.author.name}}</a>
           on {{post.date}}
-          <!-- Only show delete button if user id is 1 (admin user) -->
           {% if current_user.id == 1: %}
           <a href="{{url_for('delete_post', post_id=post.id) }}">✘</a>
           {% endif %}
@@ -43,7 +41,6 @@
       {% endfor %}
 
       <!-- New Post -->
-      <!-- Only show Create Post button if user id is 1 (admin user) -->
       {% if current_user.id == 1: %}
       <div class="d-flex justify-content-end mb-4">
         <a
