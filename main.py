@@ -39,9 +39,11 @@ gravatar = Gravatar(app,
                     base_url=None)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
-db = SQLAlchemy()
-db.init_app(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+os.environ['DEBUG'] = '1'
+
+db = SQLAlchemy(app)
 
 
 # CONFIGURE TABLES
@@ -90,7 +92,12 @@ class Comment(db.Model):
 
 
 with app.app_context():
-    db.create_all()
+    try:
+        # Create tables
+        db.create_all()
+        print(f"Tables created successfully.")
+    except Exception as e:
+        print(f"Error creating tables: {e}")
 
 
 # Create an admin-only decorator
