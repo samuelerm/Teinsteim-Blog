@@ -270,15 +270,20 @@ def contact():
 
 
 def send_email(name, email, phone, message):
-    email_message = f"Subject:New Message\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nMessage:{message}"
-    with smtplib.SMTP("smtp.gmail.com") as connection:
-        connection.starttls()
-        connection.login(user=MAIL_ADDRESS, password=MAIL_APP_PW)
-        connection.sendmail(from_addr=MAIL_ADDRESS,
-                            to_addrs=email,
-                            msg=email_message)
-    return render_template("contact.html", msg_sent=True, current_user=current_user)
+    try:
+        email_message = f"Subject:New Message\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nMessage:{message}"
+        with smtplib.SMTP("smtp.gmail.com", 587) as connection:
+            connection.set_debuglevel(1)
+            connection.starttls()
+            connection.login(user=MAIL_ADDRESS, password=MAIL_APP_PW)
+            connection.sendmail(from_addr=MAIL_ADDRESS,
+                                to_addrs=email,
+                                msg=email_message)
+        return render_template("contact.html", msg_sent=True, current_user=current_user)
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return render_template("contact.html", msg_sent=False, error=True, current_user=current_user)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
