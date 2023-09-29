@@ -251,14 +251,15 @@ def about():
     return render_template("about.html", current_user=current_user)
 
 
-MAIL_ADDRESS = os.environ.get("EMAIL_KEY")
+MAIL_ADDRESS = os.environ.get('EMAIL')
 MAIL_APP_PW = os.environ.get("PASSWORD_KEY")
-
+print(MAIL_ADDRESS)
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     if request.method == "POST":
-        send_email(request.form.get("name"), request.form.get("email"), request.form.get("phone"), request.form.get("message"))
+        send_email(request.form.get("name"), request.form.get("email"), request.form.get("phone"),
+                   request.form.get("message"))
     return render_template("contact.html", msg_sent=False,  current_user=current_user)
 
 
