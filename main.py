@@ -252,7 +252,6 @@ def about():
 
 MAIL_ADDRESS = os.environ.get('EMAIL')
 MAIL_APP_PW = os.environ.get("PASSWORD_KEY")
-print(MAIL_ADDRESS)
 
 
 @app.route("/contact", methods=["GET", "POST"])
