@@ -214,7 +214,6 @@ def add_new_post():
     return render_template("make-post.html", form=form, current_user=current_user)
 
 
-
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
 def edit_post(post_id):
     post = db.get_or_404(BlogPost, post_id)
@@ -255,6 +254,7 @@ MAIL_ADDRESS = os.environ.get('EMAIL')
 MAIL_APP_PW = os.environ.get("PASSWORD_KEY")
 print(MAIL_ADDRESS)
 
+
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     if request.method == "POST":
@@ -275,4 +275,4 @@ def send_email(name, email, phone, message):
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
