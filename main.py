@@ -259,6 +259,7 @@ def about():
 
 MAIL_ADDRESS = os.environ.get('EMAIL')
 MAIL_APP_PW = os.environ.get("PASSWORD_KEY")
+PRIV_MAIL = os.environ.get('MAIL')
 
 
 @app.route("/contact", methods=["GET", "POST"])
@@ -277,7 +278,7 @@ def send_email(name, email, phone, message):
             connection.starttls()
             connection.login(user=MAIL_ADDRESS, password=MAIL_APP_PW)
             connection.sendmail(from_addr=MAIL_ADDRESS,
-                                to_addrs=email,
+                                to_addrs=PRIV_MAIL,
                                 msg=email_message)
         return render_template("contact.html", msg_sent=True, current_user=current_user)
     except Exception as e:
